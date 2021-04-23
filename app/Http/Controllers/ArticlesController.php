@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-//use Illuminate\Http\Request;
+use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
-use Illuminate\Support\Str;
+//use Illuminate\Support\Str;
 
 class ArticlesController extends Controller
 {
@@ -27,14 +27,8 @@ class ArticlesController extends Controller
         return view('articles.create', compact('title'));
     }
 
-    public function store()
+    public function store(ArticleRequest $request)
     {
-        $this->validate(request(), [
-           'code' => 'required|unique:articles|alpha_dash',
-            'title' => 'required|between:5,100',
-            'body' => 'required',
-            'annotation' => 'required|max:255',
-        ]);
         $article = new Article();
         $article->code = request('code');
         $article->title = request('title');
@@ -46,4 +40,28 @@ class ArticlesController extends Controller
 
         return redirect('/');
     }
+
+    public function edit(Article $article)
+    {
+        $title = 'Изменить статью';
+        return view('articles.edit', compact('title', 'article'));
+    }
+
+    public function update(Article $article, ArticleRequest $request)
+    {
+        $atributes = $request->validated();
+
+        $atributes['published'] = (bool)request('published');
+
+        $article->where('code', $article->code)->update($atributes);
+
+        return redirect('/articles/' . $atributes['code'])->with('success', 'Статья изменена');
+    }
+
+    public function destroy(Article $article)
+    {
+        $article->where('code', $article->code)->delete();
+        return redirect('/');
+    }
 }
+
