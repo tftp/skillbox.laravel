@@ -55,7 +55,7 @@ class ArticlesController extends Controller
 
         $article->where('code', $article->code)->update($atributes);
 
-        return redirect('/articles/' . $atributes['code'])->with('success', 'Статья изменена');
+        return redirect()->route('articles.show', ['article' => $atributes['code']])->with('success', 'Статья изменена');
     }
 
     public function destroy(Article $article)
