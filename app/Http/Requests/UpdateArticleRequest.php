@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ArticleRequest extends FormRequest
+class UpdateArticleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +23,11 @@ class ArticleRequest extends FormRequest
      */
     public function rules()
     {
-        $method = request('_method');
-        $validteData = [
+        return [
+            'code' => 'required|alpha_dash',
             'title' => 'required|between:5,100',
             'body' => 'required',
             'annotation' => 'required|max:255',
         ];
-
-        $validteData['code'] = ($method == 'PATCH' ? 'required|alpha_dash' : 'required|unique:articles|alpha_dash');
-
-        return $validteData;
     }
 }

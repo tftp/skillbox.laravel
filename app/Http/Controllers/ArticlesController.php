@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
+use App\Http\Requests\StoreArticleRequest;
 use App\Models\Article;
 //use Illuminate\Support\Str;
 
@@ -27,7 +28,7 @@ class ArticlesController extends Controller
         return view('articles.create', compact('title'));
     }
 
-    public function store(ArticleRequest $request)
+    public function store(StoreArticleRequest $request)
     {
         $article = new Article();
         $article->code = request('code');
@@ -47,20 +48,20 @@ class ArticlesController extends Controller
         return view('articles.edit', compact('title', 'article'));
     }
 
-    public function update(Article $article, ArticleRequest $request)
+    public function update(Article $article, UpdateArticleRequest $request)
     {
         $atributes = $request->validated();
 
         $atributes['published'] = (bool)request('published');
 
-        $article->where('code', $article->code)->update($atributes);
+        $article->update($atributes);
 
         return redirect()->route('articles.show', ['article' => $atributes['code']])->with('success', 'Статья изменена');
     }
 
     public function destroy(Article $article)
     {
-        $article->where('code', $article->code)->delete();
+        $article->delete();
         return redirect('/');
     }
 }
