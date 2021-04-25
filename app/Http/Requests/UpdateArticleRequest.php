@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UpdateArticleRequest extends FormRequest
 {
@@ -21,13 +23,20 @@ class UpdateArticleRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
-        return [
-            'code' => 'required|alpha_dash',
-            'title' => 'required|between:5,100',
-            'body' => 'required',
-            'annotation' => 'required|max:255',
-        ];
+        $article = $this->route('article');
+        $data = Validator::make(request()->all(), [
+                'code' => [
+                'required',
+                Rule::unique('articles')->ignore($article),
+                'alpha_dash',
+            ],
+            'title' => ['required', 'between:5,100'],
+            'body' => ['required'],
+            'annotation' => ['required','max:255'],
+        ]);
+
+        return $data->getRules();
     }
 }

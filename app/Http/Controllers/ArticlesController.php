@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class ArticlesController extends Controller
 {
@@ -49,26 +47,14 @@ class ArticlesController extends Controller
         return view('articles.edit', compact('title', 'article'));
     }
 
-    public function update(Article $article, Request $request)
+    public function update(Article $article, UpdateArticleRequest $request)
     {
-        $data = Validator::make($request->all(), [
-            'code' => [
-                'required',
-                Rule::unique('articles')->ignore($article),
-                'alpha_dash',
-            ],
-            'title' => ['required', 'between:5,100'],
-            'body' => ['required'],
-            'annotation' => ['required','max:255'],
-        ]);
+        $attributes = $request->validated();
+        $attributes['published'] = (bool)request('published');
 
-        $atributes = $data->validate();
+        $article->update($attributes);
 
-        $atributes['published'] = (bool)request('published');
-
-        $article->update($atributes);
-
-        return redirect()->route('articles.show', ['article' => $atributes['code']])->with('success', 'Статья изменена');
+        return redirect()->route('articles.show', ['article' => $attributes['code']])->with('success', 'Статья изменена');
     }
 
     public function destroy(Article $article)
