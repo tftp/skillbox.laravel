@@ -1,8 +1,6 @@
 @extends('layout.master')
 
-@section('title')
-    {{$title}}
-@endsection
+@section('title', $title)
 
 @section('content')
 
