@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateArticleRequest;
 use App\Http\Requests\StoreArticleRequest;
 use App\Models\Article;
-//use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ArticlesController extends Controller
 {
@@ -48,9 +49,20 @@ class ArticlesController extends Controller
         return view('articles.edit', compact('title', 'article'));
     }
 
-    public function update(Article $article, UpdateArticleRequest $request)
+    public function update(Article $article, Request $request)
     {
-        $atributes = $request->validated();
+        $data = Validator::make($request->all(), [
+            'code' => [
+                'required',
+                Rule::unique('articles')->ignore($article),
+                'alpha_dash',
+            ],
+            'title' => ['required', 'between:5,100'],
+            'body' => ['required'],
+            'annotation' => ['required','max:255'],
+        ]);
+
+        $atributes = $data->validate();
 
         $atributes['published'] = (bool)request('published');
 
