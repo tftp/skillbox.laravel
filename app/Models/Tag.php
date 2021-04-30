@@ -9,8 +9,15 @@ class Tag extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function articles()
     {
-        $this->belongsToMany(Article::class);
+        return $this->belongsToMany(Article::class);
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'title';
     }
 }

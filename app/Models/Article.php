@@ -9,7 +9,7 @@ class Article extends Model
 {
     use HasFactory;
 
-    public $guarded = [];
+    protected $guarded = [];
 
     public function getRouteKeyName()
     {

@@ -15,6 +15,18 @@
 
                 @include('articles.form')
 
+                <div class="form-group">
+                    <label for="tagsArticle">Тэги</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="tagsArticle"
+                        placeholder="тэг1,тэг2,тэг3...."
+                        name="tags"
+                        value="{{old('tags')}}"
+                    >
+                </div>
+
                 <button type="submit" class="btn btn-primary">Сохранить статью</button>
             </form>
         </div><!-- /.blog-post -->
