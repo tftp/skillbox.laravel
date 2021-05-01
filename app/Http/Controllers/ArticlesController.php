@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
-use App\Models\Tag;
+use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
 {
@@ -39,14 +39,9 @@ class ArticlesController extends Controller
 
         $article->save();
 
-        $tags = array_filter(explode(',', request('tags')));
+        $tags = collect(array_filter(explode(',', request('tags'))))->keyBy(function ($item) {return $item; });
 
-        if (!empty($tags)) {
-            foreach ($tags as $tag) {
-                $tag = Tag::firstOrCreate(['title' => trim($tag)]);
-                $article->tags()->attach($tag);
-            }
-        }
+        (new TagsSynchronizer())->sync($tags, $article);
 
         return redirect('/');
     }
@@ -64,18 +59,9 @@ class ArticlesController extends Controller
 
         $article->update($attributes);
 
-        $articleTags = $article->tags->keyBy('title');
         $tags = collect(array_filter(explode(',', request('tags'))))->keyBy(function ($item) {return $item; });
-        $syncIds = $articleTags->intersectByKeys($tags)->pluck('id')->toArray();
-        $tagsToAttach = $tags->diffKeys($articleTags);
 
-        foreach ($tagsToAttach as $tag) {
-            $tag = Tag::firstOrCreate(['title' => trim($tag)]);
-
-            $syncIds[] = $tag->id;
-        }
-
-        $article->tags()->sync($syncIds);
+        (new TagsSynchronizer())->sync($tags, $article);
 
         return redirect()->route('articles.show', ['article' => $attributes['code']])->with('success', 'Статья изменена');
     }
