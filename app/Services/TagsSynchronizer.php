@@ -14,14 +14,14 @@ class TagsSynchronizer
      */
     public function sync(Collection $tags, Model $model)
     {
-        $modelTags = $model->tags->keyBy('title');
-        $syncIds = $modelTags->intersectByKeys($tags)->pluck('id')->toArray();
-        $tagsToAttach = $tags->diffKeys($modelTags);
+        $syncIds = [];
 
-        foreach ($tagsToAttach as $tag) {
-            $tag = Tag::firstOrCreate(['title' => trim($tag)]);
+        foreach ($tags as $tag) {
+            if (!empty(trim($tag))) {
+                $tag = Tag::firstOrCreate(['title' => trim($tag)]);
 
-            $syncIds[] = $tag->id;
+                $syncIds[] = $tag->id;
+            }
         }
 
         $model->tags()->sync($syncIds);

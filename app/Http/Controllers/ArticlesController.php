@@ -9,6 +9,13 @@ use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
 {
+    private TagsSynchronizer $tagsSynchronizer;
+
+    public function __construct(TagsSynchronizer $tagsSynchronizer)
+    {
+        $this->tagsSynchronizer = $tagsSynchronizer;
+    }
+
     public function index()
     {
         $title = 'Главная';
@@ -39,9 +46,9 @@ class ArticlesController extends Controller
 
         $article->save();
 
-        $tags = collect(array_filter(explode(',', request('tags'))))->keyBy(function ($item) {return $item; });
+        $tags = collect(array_filter(explode(',', request('tags'))));
 
-        (new TagsSynchronizer())->sync($tags, $article);
+        $this->tagsSynchronizer->sync($tags, $article);
 
         return redirect('/');
     }
@@ -59,11 +66,11 @@ class ArticlesController extends Controller
 
         $article->update($attributes);
 
-        $tags = collect(array_filter(explode(',', request('tags'))))->keyBy(function ($item) {return $item; });
+        $tags = collect(array_filter(explode(',', request('tags'))));
 
-        (new TagsSynchronizer())->sync($tags, $article);
+        $this->tagsSynchronizer->sync($tags, $article);
 
-        return redirect()->route('articles.show', ['article' => $attributes['code']])->with('success', 'Статья изменена');
+        return redirect()->route('articles.show', ['article' => $article])->with('success', 'Статья изменена');
     }
 
     public function destroy(Article $article)
