@@ -7,7 +7,7 @@ use App\Http\Controllers\ContactsController;
 
 Route::get('/', [ArticlesController::class, 'index']);
 Route::resource('/articles', ArticlesController::class)->except(['index']);
-Route::get('/articles/tags/{tag}', [TagsController::class, 'index']);
+Route::get('/articles/tags/{tag}', [TagsController::class, 'index'])->name('articles.tags');
 
 Route::get('/about', function () {
     $title = 'О нас';
