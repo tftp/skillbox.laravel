@@ -15,6 +15,17 @@
             <form method="post" action="/articles/{{ $article->code }}">
                 @method('PATCH')
                 @include('articles.form', ['checked' => ($article->published ? 'checked' : '')])
+                <div class="form-group">
+                    <label for="tagsArticle">Тэги</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="tagsArticle"
+                        placeholder="тэг1,тэг2,тэг3...."
+                        name="tags"
+                        value="{{old('tags', $article->tags->pluck('title')->implode(',') ?? '')}}"
+                    >
+                </div>
 
                 <button type="submit" class="btn btn-primary">Изменить статью</button>
             </form>

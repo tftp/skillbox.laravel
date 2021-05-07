@@ -5,13 +5,21 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
+use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
 {
+    private TagsSynchronizer $tagsSynchronizer;
+
+    public function __construct(TagsSynchronizer $tagsSynchronizer)
+    {
+        $this->tagsSynchronizer = $tagsSynchronizer;
+    }
+
     public function index()
     {
         $title = 'Главная';
-        $articles = Article::latest()->get();
+        $articles = Article::with('tags')->latest()->get();
         return view('articles.index', compact('title', 'articles'));
     }
 
@@ -38,6 +46,10 @@ class ArticlesController extends Controller
 
         $article->save();
 
+        $tags = collect(array_filter(explode(',', request('tags'))));
+
+        $this->tagsSynchronizer->sync($tags, $article);
+
         return redirect('/');
     }
 
@@ -54,7 +66,11 @@ class ArticlesController extends Controller
 
         $article->update($attributes);
 
-        return redirect()->route('articles.show', ['article' => $attributes['code']])->with('success', 'Статья изменена');
+        $tags = collect(array_filter(explode(',', request('tags'))));
+
+        $this->tagsSynchronizer->sync($tags, $article);
+
+        return redirect()->route('articles.show', ['article' => $article])->with('success', 'Статья изменена');
     }
 
     public function destroy(Article $article)

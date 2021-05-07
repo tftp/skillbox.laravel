@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Article extends Model
+class Tag extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function getRouteKeyName()
+    public function articles()
     {
-        return 'code';
+        return $this->belongsToMany(Article::class);
     }
 
-    public function tags()
+    public function getRouteKeyName()
     {
-        return $this->belongsToMany(Tag::class);
+        return 'title';
     }
 }

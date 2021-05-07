@@ -13,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(App\Services\TagsSynchronizer::class, function () {
+            return new App\Services\TagsSynchronizer();
+        });
     }
 
     /**
@@ -23,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        view()->composer('layout.sidebar', function ($view) {
+            $view->with('tagsCloud', \App\Models\Tag::has('articles')->get());
+        });
     }
 }
