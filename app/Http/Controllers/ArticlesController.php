@@ -14,6 +14,7 @@ class ArticlesController extends Controller
     public function __construct(TagsSynchronizer $tagsSynchronizer)
     {
         $this->tagsSynchronizer = $tagsSynchronizer;
+        $this->middleware('auth')->except('index', 'show');
     }
 
     public function index()
