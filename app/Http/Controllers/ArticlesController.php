@@ -14,7 +14,9 @@ class ArticlesController extends Controller
     public function __construct(TagsSynchronizer $tagsSynchronizer)
     {
         $this->tagsSynchronizer = $tagsSynchronizer;
-        $this->middleware('auth')->except('index', 'show');
+        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('can:update,article')->only(['edit', 'update']);
+        $this->middleware('can:delete,article')->only('destroy');
     }
 
     public function index()
@@ -44,6 +46,7 @@ class ArticlesController extends Controller
         $article->body = request('body');
         $article->annotation = request('annotation');
         $article->published = (bool)request('published');
+        $article->user_id = auth()->id();
 
         $article->save();
 

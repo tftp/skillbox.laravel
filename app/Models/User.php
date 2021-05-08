@@ -40,4 +40,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @param Article $article
+     * @return bool
+     */
+    public function isOwnerOf(Article $article): bool
+    {
+        return $this->id == $article->user_id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return false;
+    }
 }
