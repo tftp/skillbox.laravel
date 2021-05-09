@@ -19,7 +19,7 @@ class ArticlePolicy
      */
     public function update(User $user, Article $article)
     {
-        return $user->isOwnerOf($article);
+        return $user->isOwnerOfArticle($article);
     }
 
     /**
@@ -31,6 +31,6 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article)
     {
-        return $user->isOwnerOf($article);
+        return $user->isOwnerOfArticle($article);
     }
 }

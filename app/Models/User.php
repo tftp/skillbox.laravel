@@ -45,7 +45,7 @@ class User extends Authenticatable
      * @param Article $article
      * @return bool
      */
-    public function isOwnerOf(Article $article): bool
+    public function isOwnerOfArticle(Article $article): bool
     {
         return $this->id == $article->user_id;
     }
