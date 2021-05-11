@@ -14,9 +14,8 @@ Route::get('/about', function () {
     return view('about', compact('title'));
 });
 
-
-Route::get('/admin/feedback', [ContactsController::class, 'index']);
+Route::get('/admin/feedback', [ContactsController::class, 'index'])->middleware('auth');
 Route::get('/contacts', [ContactsController::class, 'create']);
 Route::post('/contacts', [ContactsController::class, 'store']);
 
-
+Auth::routes();

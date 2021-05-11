@@ -1,6 +1,8 @@
 <div class="blog-post">
     <h2 class="blog-post-title"><a href="/articles/{{$article->code}}">{{$article->title}}</a></h2>
-    <a href='{{route('articles.edit', ['article' => $article->code])}}' class='badge badge-secondary'>Изменить</a>
+    @can('update', $article)
+        <a href='{{route('articles.edit', ['article' => $article->code])}}' class='badge badge-secondary'>Изменить</a>
+    @endcan
 
     @include('articles.tags', ['tags' => $article->tags])
 
