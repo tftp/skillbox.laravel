@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\ArticleCreated;
+use App\Events\ArticleUpdated;
 use App\Listeners\SendArcticleCreatedNotification;
+use App\Listeners\SendArcticleUpdatedNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ArticleCreated::class => [
             SendArcticleCreatedNotification::class,
+        ],
+        ArticleUpdated::class => [
+            SendArcticleUpdatedNotification::class,
         ],
     ];
 
