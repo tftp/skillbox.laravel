@@ -26,7 +26,7 @@ class SendArcticleDeletedNotification
      */
     public function handle(ArticleDeleted $event)
     {
-        \Mail::to('user@local')->send(
+        \Mail::to(config('mail.adminEmail'))->send(
             new \App\Mail\ArticleDeleted($event->article)
         );
     }

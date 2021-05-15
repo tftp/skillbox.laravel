@@ -26,7 +26,7 @@ class SendArcticleUpdatedNotification
      */
     public function handle(ArticleUpdated $event)
     {
-        \Mail::to('user@local')->send(
+        \Mail::to(config('mail.adminEmail'))->send(
             new \App\Mail\ArticleUpdated($event->article)
         );
     }

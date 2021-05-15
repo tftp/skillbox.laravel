@@ -26,7 +26,7 @@ class SendArcticleCreatedNotification
      */
     public function handle(ArticleCreated $event)
     {
-        \Mail::to('user@local')->send(
+        \Mail::to(config('mail.adminEmail'))->send(
             new \App\Mail\ArticleCreated($event->article)
         );
     }
