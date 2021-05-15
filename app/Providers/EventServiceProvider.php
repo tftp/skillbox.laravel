@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Events\ArticleCreated;
+use App\Events\ArticleDeleted;
 use App\Events\ArticleUpdated;
 use App\Listeners\SendArcticleCreatedNotification;
+use App\Listeners\SendArcticleDeletedNotification;
 use App\Listeners\SendArcticleUpdatedNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -27,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ArticleUpdated::class => [
             SendArcticleUpdatedNotification::class,
+        ],
+        ArticleDeleted::class => [
+            SendArcticleDeletedNotification::class,
         ],
     ];
 
