@@ -12,7 +12,7 @@ class ArticleUpdated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $article;
+    private $article;
     /**
      * Create a new event instance.
      *
@@ -21,6 +21,11 @@ class ArticleUpdated
     public function __construct(Article $article)
     {
         $this->article = $article;
+    }
+
+    public function getArticle():Article
+    {
+        return $this->article;
     }
 
     /**

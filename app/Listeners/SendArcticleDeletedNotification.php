@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\ArticleDeleted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
 
 class SendArcticleDeletedNotification
 {
@@ -26,8 +27,8 @@ class SendArcticleDeletedNotification
      */
     public function handle(ArticleDeleted $event)
     {
-        \Mail::to(config('mail.adminEmail'))->send(
-            new \App\Mail\ArticleDeleted($event->article)
+        Mail::to(config('mail.adminEmail'))->send(
+            new \App\Mail\ArticleDeleted($event->getArticle())
         );
     }
 }

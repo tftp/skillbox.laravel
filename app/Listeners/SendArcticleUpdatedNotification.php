@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\ArticleUpdated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
 
 class SendArcticleUpdatedNotification
 {
@@ -26,8 +27,8 @@ class SendArcticleUpdatedNotification
      */
     public function handle(ArticleUpdated $event)
     {
-        \Mail::to(config('mail.adminEmail'))->send(
-            new \App\Mail\ArticleUpdated($event->article)
+        Mail::to(config('mail.adminEmail'))->send(
+            new \App\Mail\ArticleUpdated($event->getArticle())
         );
     }
 }

@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\ArticleCreated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
 
 class SendArcticleCreatedNotification
 {
@@ -26,8 +27,8 @@ class SendArcticleCreatedNotification
      */
     public function handle(ArticleCreated $event)
     {
-        \Mail::to(config('mail.adminEmail'))->send(
-            new \App\Mail\ArticleCreated($event->article)
+        Mail::to(config('mail.adminEmail'))->send(
+            new \App\Mail\ArticleCreated($event->getArticle())
         );
     }
 }
