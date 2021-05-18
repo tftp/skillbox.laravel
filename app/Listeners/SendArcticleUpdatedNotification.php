@@ -3,20 +3,19 @@
 namespace App\Listeners;
 
 use App\Events\ArticleUpdated;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
 class SendArcticleUpdatedNotification
 {
+    private string $adminEmail;
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(string $adminEmail)
     {
-        //
+        $this->adminEmail = $adminEmail;
     }
 
     /**
@@ -27,7 +26,8 @@ class SendArcticleUpdatedNotification
      */
     public function handle(ArticleUpdated $event)
     {
-        Mail::to(config('mail.adminEmail'))->send(
+        $adminEmail = $this->adminEmail;
+        Mail::to($adminEmail)->send(
             new \App\Mail\ArticleUpdated($event->getArticle())
         );
     }

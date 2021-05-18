@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Listeners\SendArcticleCreatedNotification;
+use App\Listeners\SendArcticleDeletedNotification;
+use App\Listeners\SendArcticleUpdatedNotification;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(App\Services\TagsSynchronizer::class, function () {
             return new App\Services\TagsSynchronizer();
         });
+
+        $this->app->when([
+            SendArcticleUpdatedNotification::class,
+            SendArcticleCreatedNotification::class,
+            SendArcticleDeletedNotification::class,
+            ])
+            ->needs('$adminEmail')
+            ->giveConfig('mail.adminEmail');
     }
 
     /**
