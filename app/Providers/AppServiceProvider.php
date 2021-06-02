@@ -6,6 +6,7 @@ use App\Listeners\SendArcticleCreatedNotification;
 use App\Listeners\SendArcticleDeletedNotification;
 use App\Listeners\SendArcticleUpdatedNotification;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +39,14 @@ class AppServiceProvider extends ServiceProvider
     {
         view()->composer('layout.sidebar', function ($view) {
             $view->with('tagsCloud', \App\Models\Tag::has('articles')->get());
+        });
+
+        Blade::if('admin', function () {
+            if (auth()->user()) {
+                return auth()->user()->isAdmin();
+            }
+
+            return false;
         });
     }
 }
