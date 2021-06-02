@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -55,6 +56,11 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return false;
+        return $this->email == config('admin.email');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class); 
     }
 }
