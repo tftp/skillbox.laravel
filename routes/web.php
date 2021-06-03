@@ -17,5 +17,8 @@ Route::get('/about', function () {
 Route::get('/admin/feedback', [ContactsController::class, 'index'])->middleware('auth');
 Route::get('/contacts', [ContactsController::class, 'create']);
 Route::post('/contacts', [ContactsController::class, 'store']);
+Route::get('/owner/articles', [\App\Http\Controllers\ArticlesOwnerController::class, 'index']);
+Route::get('/admin/articles', [\App\Http\Controllers\ArticlesAdminController::class, 'index']);
+Route::get('/admin/articles/{article}/edit', [\App\Http\Controllers\ArticlesController::class, 'edit'])->name('admin.articles.edit');
 
 Auth::routes();

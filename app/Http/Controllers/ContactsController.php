@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contact;
+use Illuminate\Support\Facades\Gate;
 
 class ContactsController extends Controller
 {
     public function index()
     {
+        if (! Gate::allows('adminPrivileges')) {
+            abort(403);
+        }
+
         $title = 'Сообщения';
         $contacts = Contact::latest()->get();
         return view('contacts.index', compact('contacts', 'title'));

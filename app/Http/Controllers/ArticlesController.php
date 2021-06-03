@@ -22,7 +22,7 @@ class ArticlesController extends Controller
     public function index()
     {
         $title = 'Главная';
-        $articles = Article::with('tags')->latest()->get();
+        $articles = Article::with('tags')->latest()->where('published', true)->get();
         return view('articles.index', compact('title', 'articles'));
     }
 

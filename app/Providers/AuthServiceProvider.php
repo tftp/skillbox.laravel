@@ -30,5 +30,9 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
         });
+
+        $gate->define('adminPrivileges', function ($user) {
+            return $user->isAdmin();
+        });
     }
 }
