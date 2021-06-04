@@ -21,21 +21,18 @@ class ArticlesController extends Controller
 
     public function index()
     {
-        $title = 'Главная';
-        $articles = Article::with('tags')->latest()->get();
-        return view('articles.index', compact('title', 'articles'));
+        $articles = Article::with('tags')->latest()->where('published', true)->get();
+        return view('articles.index', compact('articles'));
     }
 
     public function show(Article $article)
     {
-        $title = $article->title;
-        return view('articles.show', compact('title', 'article'));
+        return view('articles.show', compact('article'));
     }
 
     public function create()
     {
-        $title = 'Создание статьи';
-        return view('articles.create', compact('title'));
+        return view('articles.create');
     }
 
     public function store(StoreArticleRequest $request)
@@ -54,13 +51,12 @@ class ArticlesController extends Controller
 
         $this->tagsSynchronizer->sync($tags, $article);
 
-        return redirect('/');
+        return redirect(route('home'));
     }
 
     public function edit(Article $article)
     {
-        $title = 'Изменить статью';
-        return view('articles.edit', compact('title', 'article'));
+        return view('articles.edit', compact('article'));
     }
 
     public function update(Article $article, UpdateArticleRequest $request)
@@ -80,7 +76,7 @@ class ArticlesController extends Controller
     public function destroy(Article $article)
     {
         $article->delete();
-        return redirect('/');
+        return redirect(route('home'));
     }
 }
 

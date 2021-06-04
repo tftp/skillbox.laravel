@@ -42,13 +42,27 @@
         </div>
     </header>
 
+    @admin
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            Админ раздел:
+            <div class="collapse navbar-collapse">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="{{ route('admin.articles') }}">Список статей</a>
+                    <a class="nav-item nav-link" href="{{ route('admin.feedback') }}">Обратная связь</a>
+                </div>
+            </div>
+        </nav>
+    @endadmin
+
     <div class="nav-scroller py-1 mb-2">
         <nav class="nav">
-            <a class="p-2 text-muted" href="/">Главная</a>
-            <a class="p-2 text-muted" href="/about">О нас</a>
-            <a class="p-2 text-muted" href="/contacts">Контакты</a>
-            <a class="p-2 text-muted" href="/articles/create">Создать статью</a>
-            <a class="p-2 text-muted" href="/admin/feedback">Админ раздел</a>
+            <a class="p-2 text-muted" href="{{ route('home') }}">Главная</a>
+            @if(auth()->check() && ! auth()->user()->isAdmin())
+                <a class="p-2 text-muted" href="{{ route('owner.articles') }}">Мои статьи</a>
+            @endif
+            <a class="p-2 text-muted" href="{{ route('about') }}">О нас</a>
+            <a class="p-2 text-muted" href="{{ route('contacts.create') }}">Контакты</a>
+            <a class="p-2 text-muted" href="{{ route('articles.create') }}">Создать статью</a>
         </nav>
     </div>
 </div>

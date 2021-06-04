@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', $title)
+@section('title', $article->title)
 
 @section('content')
 
@@ -9,10 +9,14 @@
         @include('layout.success')
 
         <div class="blog-post">
-            <h2 class="blog-post-title">{{$article->title}}</h2>
+            <h2 class="blog-post-title mb-4">{{$article->title}}</h2>
 
             @can('update', $article)
-                <a href='{{route('articles.edit', ['article' => $article->code])}}' class='badge badge-secondary'>Изменить</a>
+                @admin
+                    <a href='{{route('admin.articles.edit', ['article' => $article->code])}}' class='badge badge-secondary'>Изменить</a>
+                @else
+                    <a href='{{route('articles.edit', ['article' => $article->code])}}' class='badge badge-secondary'>Изменить</a>
+                @endadmin
             @endcan
 
             @include('articles.tags', ['tags' => $article->tags])
