@@ -51,7 +51,7 @@ class ArticlesController extends Controller
 
         $this->tagsSynchronizer->sync($tags, $article);
 
-        return redirect('/');
+        return redirect(route('home'));
     }
 
     public function edit(Article $article)
@@ -76,7 +76,7 @@ class ArticlesController extends Controller
     public function destroy(Article $article)
     {
         $article->delete();
-        return redirect('/');
+        return redirect(route('home'));
     }
 }
 

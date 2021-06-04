@@ -32,7 +32,7 @@ class ContactsController extends Controller
         $contact->save();
 
         $success = 'Сообщение успешно отправлено';
-        return redirect('/contacts')->with([
+        return redirect(route('contacts.create'))->with([
             'success' => 'Сообщение успешно отправлено',
             ]);
     }
