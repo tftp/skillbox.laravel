@@ -20,7 +20,7 @@ class CreateRolesTable extends Migration
             $table->timestamps();
         });
 
-        Role::create(['name' => 'Admin']);
+        Role::create(['name' => 'Administrator']);
         Role::create(['name' => 'User']);
     }
 
