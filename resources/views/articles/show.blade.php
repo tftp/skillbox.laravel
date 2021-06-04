@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', $title)
+@section('title', $article->title)
 
 @section('content')
 
@@ -9,7 +9,7 @@
         @include('layout.success')
 
         <div class="blog-post">
-            <h2 class="blog-post-title">{{$article->title}}</h2>
+            <h2 class="blog-post-title mb-4">{{$article->title}}</h2>
 
             @can('update', $article)
                 @admin

@@ -14,15 +14,13 @@ class ContactsController extends Controller
             abort(403);
         }
 
-        $title = 'Сообщения';
         $contacts = Contact::latest()->get();
-        return view('contacts.index', compact('contacts', 'title'));
+        return view('contacts.index', compact('contacts'));
     }
 
     public function create()
     {
-        $title = 'Форма обратной связи';
-        return view('contacts.create', compact('title'));
+        return view('contacts.create');
     }
 
     public function store()
@@ -37,11 +35,9 @@ class ContactsController extends Controller
         $contact->message = request('message');
         $contact->save();
 
-        $title = 'Форма обратной связи';
         $success = 'Сообщение успешно отправлено';
         return redirect('/contacts')->with([
             'success' => 'Сообщение успешно отправлено',
             ]);
-//        return view('contacts.create', compact('title', 'success'));
     }
 }

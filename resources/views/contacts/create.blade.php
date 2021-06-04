@@ -1,13 +1,13 @@
 @extends('layout.master')
 
-@section('title', $title)
+@section('title', 'Форма обратной связи')
 
 @section('content')
 
     <div class="col-md-8 blog-main">
 
         <div class="blog-post">
-            <h2 class="blog-post-title">{{$title}}</h2>
+            <h2 class="blog-post-title mb-4">Форма обратной связи</h2>
 
             @include('layout.errors')
             @include('layout.success')
