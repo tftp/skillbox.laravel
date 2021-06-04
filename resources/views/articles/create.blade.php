@@ -11,7 +11,7 @@
 
             @include('layout.errors')
 
-            <form method="post" action="/articles">
+            <form method="post" action="{{ route('articles.store') }}">
 
                 @include('articles.form')
 

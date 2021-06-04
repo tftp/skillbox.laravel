@@ -12,7 +12,7 @@
 
             @include('layout.errors')
 
-            <form method="post" action="/articles/{{ $article->code }}">
+            <form method="post" action="{{ route('articles.update', ['article' => $article]) }}">
                 @method('PATCH')
                 @include('articles.form', ['checked' => ($article->published ? 'checked' : '')])
                 <div class="form-group">
@@ -29,7 +29,7 @@
 
                 <button type="submit" class="btn btn-primary">Изменить статью</button>
             </form>
-            <form method="post" action="/articles/{{ $article->code }}">
+            <form method="post" action="{{ route('articles.update', ['article' => $article]) }}">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-primary mt-2">Удалить</button>
