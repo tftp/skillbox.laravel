@@ -14,7 +14,7 @@ Route::get('/about', function () {
     return view('about', compact('title'));
 })->name('about');
 
-Route::get('/admin/feedback', [ContactsController::class, 'index'])->name('admin.feedback')->middleware('auth');
+Route::get('/admin/feedback', [ContactsController::class, 'index'])->name('admin.feedback')->middleware('adminPrivileges');
 Route::get('/contacts', [ContactsController::class, 'create'])->name('contacts.create');
 Route::post('/contacts', [ContactsController::class, 'store'])->name('contacts.store');
 Route::get('/owner/articles', [\App\Http\Controllers\ArticlesOwnerController::class, 'index'])->name('owner.articles');

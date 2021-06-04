@@ -10,10 +10,6 @@ class ContactsController extends Controller
 {
     public function index()
     {
-        if (! Gate::allows('adminPrivileges')) {
-            abort(403);
-        }
-
         $contacts = Contact::latest()->get();
         return view('contacts.index', compact('contacts'));
     }

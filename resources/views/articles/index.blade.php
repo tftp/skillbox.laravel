@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', 'Главная')
+@section('title', 'Список статей')
 
 @section('content')
 
