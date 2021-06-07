@@ -27,6 +27,7 @@ class ArticleFactory extends Factory
             'annotation' => $this->faker->words(3, true),
             'body' => $this->faker->paragraph(20),
             'published' => $this->faker->randomKey(['true', 'false']),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
 
         ];
     }
