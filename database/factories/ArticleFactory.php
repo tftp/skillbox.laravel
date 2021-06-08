@@ -29,7 +29,7 @@ class ArticleFactory extends Factory
             'body' => $this->faker->paragraph(20),
             'published' => $this->faker->boolean(),
             'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
-            'user_id' => User::all()->random(),
+            'user_id' => User::factory(),
 
         ];
     }
