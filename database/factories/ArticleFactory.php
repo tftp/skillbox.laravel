@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ArticleFactory extends Factory
@@ -26,8 +27,9 @@ class ArticleFactory extends Factory
             'title' => $this->faker->sentence(2, true),
             'annotation' => $this->faker->words(3, true),
             'body' => $this->faker->paragraph(20),
-            'published' => $this->faker->randomKey(['true', 'false']),
+            'published' => $this->faker->boolean(),
             'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'user_id' => User::all()->random(),
 
         ];
     }
