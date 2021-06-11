@@ -28,6 +28,9 @@ class AppServiceProvider extends ServiceProvider
             ])
             ->needs('$adminEmail')
             ->giveConfig('mail.adminEmail');
+        $this->app->singleton(App\Services\PushallSerice::class, function () {
+            return new App\Services\PushallService();
+        });
     }
 
     /**
