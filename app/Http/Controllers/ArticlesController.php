@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
+use App\Notifications\TelegramPushNotification;
 use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
@@ -50,6 +51,8 @@ class ArticlesController extends Controller
         $tags = collect(array_filter(explode(',', request('tags'))));
 
         $this->tagsSynchronizer->sync($tags, $article);
+
+        auth()->user()->notify(new TelegramPushNotification($article));
 
         return redirect(route('home'));
     }
