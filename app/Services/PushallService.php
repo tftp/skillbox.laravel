@@ -9,10 +9,10 @@ class PushallService
     private $id;
     private $key;
 
-    public function __construct()
+    public function __construct($id, $key)
     {
-        $this->id = config('pushall.id');
-        $this->key = config('pushall.key');
+        $this->id = $id;
+        $this->key = $key;
     }
 
     public function send($title, $text)

@@ -7,6 +7,7 @@ use App\Listeners\SendArcticleDeletedNotification;
 use App\Listeners\SendArcticleUpdatedNotification;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use App\Services\PushallService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,8 +29,10 @@ class AppServiceProvider extends ServiceProvider
             ])
             ->needs('$adminEmail')
             ->giveConfig('mail.adminEmail');
+
         $this->app->singleton(App\Services\PushallSerice::class, function () {
-            return new App\Services\PushallService();
+
+            return new PushallService(config('pushall.id'), config('pushall.key'));
         });
     }
 
