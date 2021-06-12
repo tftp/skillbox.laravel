@@ -8,6 +8,7 @@ use App\Events\ArticleUpdated;
 use App\Listeners\SendArcticleCreatedNotification;
 use App\Listeners\SendArcticleDeletedNotification;
 use App\Listeners\SendArcticleUpdatedNotification;
+use App\Listeners\SendArticleCreatedPushNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -26,6 +27,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         ArticleCreated::class => [
             SendArcticleCreatedNotification::class,
+            SendArticleCreatedPushNotification::class,
         ],
         ArticleUpdated::class => [
             SendArcticleUpdatedNotification::class,
