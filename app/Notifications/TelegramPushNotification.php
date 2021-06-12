@@ -4,8 +4,6 @@ namespace App\Notifications;
 
 use App\Models\Article;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Telegram\TelegramChannel;
 use NotificationChannels\Telegram\TelegramMessage;
@@ -52,16 +50,9 @@ class TelegramPushNotification extends Notification
         $url = route('articles.show', ['article' => $article]);
 
         return TelegramMessage::create()
-            // Optional recipient user id.
             ->to($this->chatId)
-            // Markdown supported.
-//            ->content("Hello there!\nYour invoice has been *PAID*")
-
-            // (Optional) Blade template for the content.
-             ->view('notification.telegram-push', ['article' => $article])
-
-            // (Optional) Inline Buttons
-            ->button('View Invoice', $url);
+            ->view('notification.telegram-push', ['article' => $article])
+            ->button('Увидеть статью', $url);
     }
 
 }
