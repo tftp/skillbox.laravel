@@ -2,17 +2,19 @@
 
 namespace App\Services;
 
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class PushallService
 {
     private $id;
     private $key;
+    private  $uri;
 
-    public function __construct($id, $key)
+    public function __construct($uri, $id, $key)
     {
         $this->id = $id;
         $this->key = $key;
+        $this->uri = $uri;
     }
 
     public function send($title, $text)
@@ -24,12 +26,8 @@ class PushallService
             'title' => $title,
             'text' => $text,
         ];
-        $client = new Client([
-            'base_uri' => config('pushall.uri'),
-            'timeout' => config('pushall.timeout'),
-        ]);
 
-        $result = $client->post('', ['form_params' => $data]);
+        $result = Http::asForm()->post($this->uri, $data);
 
         return $result;
     }

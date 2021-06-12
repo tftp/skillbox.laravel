@@ -8,6 +8,7 @@ use App\Listeners\SendArcticleUpdatedNotification;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use App\Services\PushallService;
+use App\Services\TagsSynchronizer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,8 +19,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(App\Services\TagsSynchronizer::class, function () {
-            return new App\Services\TagsSynchronizer();
+        $this->app->singleton(TagsSynchronizer::class, function () {
+            return new TagsSynchronizer();
+        });
+
+        $this->app->singleton(PushallService::class, function () {
+            return new PushallService(config('pushall.uri') , config('pushall.id'), config('pushall.key'));
         });
 
         $this->app->when([
@@ -27,13 +32,9 @@ class AppServiceProvider extends ServiceProvider
             SendArcticleCreatedNotification::class,
             SendArcticleDeletedNotification::class,
             ])
-            ->needs('$adminEmail')
-            ->giveConfig('mail.adminEmail');
+        ->needs('$adminEmail')
+        ->giveConfig('mail.adminEmail');
 
-        $this->app->singleton(App\Services\PushallSerice::class, function () {
-
-            return new PushallService(config('pushall.id'), config('pushall.key'));
-        });
     }
 
     /**
