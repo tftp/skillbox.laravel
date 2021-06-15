@@ -21,4 +21,6 @@ Route::get('/owner/articles', [\App\Http\Controllers\ArticlesOwnerController::cl
 Route::get('/admin/articles', [\App\Http\Controllers\ArticlesAdminController::class, 'index'])->name('admin.articles');
 Route::get('/admin/articles/{article}/edit', [\App\Http\Controllers\ArticlesController::class, 'edit'])->name('admin.articles.edit');
 
+Route::post('/articles/{article}/comments', [\App\Http\Controllers\CommentsController::class, 'store'])->name('comments.store');
+
 Auth::routes();

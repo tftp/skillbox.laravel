@@ -25,6 +25,12 @@
 
             <p>{{$article->body}}</p>
         </div><!-- /.blog-post -->
+        <div class="comments">
+            <h3>Комментарии:</h3>
+            @each('comments.item', $article->comments, 'comment', 'comments.empty')
+
+            @include('comments.form')
+        </div>
 
     </div><!-- /.blog-main -->
 

@@ -33,4 +33,9 @@ class Article extends Model
     {
         return (bool) $this->published;
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
