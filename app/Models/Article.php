@@ -43,4 +43,9 @@ class Article extends Model
     {
         return $this->hasMany(HistoryArticle::class);
     }
+
+    public function getChanges()
+    {
+        return $this->changes;
+    }
 }
