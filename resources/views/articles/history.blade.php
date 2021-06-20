@@ -6,15 +6,13 @@
 
     <div class="col-md-8 blog-main">
 
-        @include('layout.success')
-
         <div class="blog-post">
             @include('articles.item')
             <p>{{$article->body}}</p>
-        </div><!-- /.blog-post -->
+        </div>
 
-        @include('comments.show')
+        @include('history.index')
 
-    </div><!-- /.blog-main -->
+    </div>
 
 @endsection

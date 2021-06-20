@@ -38,4 +38,9 @@ class Article extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function histories()
+    {
+        return $this->hasMany(HistoryArticle::class);
+    }
 }

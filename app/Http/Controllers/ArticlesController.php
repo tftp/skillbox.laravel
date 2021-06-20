@@ -78,5 +78,12 @@ class ArticlesController extends Controller
         $article->delete();
         return redirect(route('home'));
     }
+
+    public function history(Article $article)
+    {
+        $article = $article->load('histories');
+
+        return view('articles.history', compact('article'));
+    }
 }
 
