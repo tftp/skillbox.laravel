@@ -33,7 +33,7 @@ class WriteHistory
         $history = new HistoryArticle();
         $history->user_id = auth()->id() ? auth()->id() : $article->user_id; // для seeders наполнителей задается $article->user_id
         $history->article_id = $article->id;
-        $history->changes = empty($changes) ? 'Статья создана' : json_encode($changes, JSON_UNESCAPED_UNICODE);
+        $history->changes = empty($changes) ? json_encode('Статья создана') : json_encode($changes);
         $history->save();
     }
 }
