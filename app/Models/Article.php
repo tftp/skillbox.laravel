@@ -33,4 +33,19 @@ class Article extends Model
     {
         return (bool) $this->published;
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(HistoryArticle::class);
+    }
+
+    public function getChanges()
+    {
+        return $this->changes;
+    }
 }

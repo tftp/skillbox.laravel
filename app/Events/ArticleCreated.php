@@ -6,7 +6,7 @@ use App\Models\Article;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ArticleCreated
+class ArticleCreated extends HistoryChanged
 {
     use Dispatchable, SerializesModels;
 

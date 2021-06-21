@@ -7,7 +7,10 @@
     <div class="col-md-8 blog-main">
 
         @foreach($articles as $article)
-            @include('articles.item')
+            <div class="blog-post">
+                @include('articles.item')
+                <p>{{$article->annotation}}</p>
+            </div>
         @endforeach
 
     </div><!-- /.blog-main -->

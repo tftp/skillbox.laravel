@@ -78,5 +78,14 @@ class ArticlesController extends Controller
         $article->delete();
         return redirect(route('home'));
     }
+
+    public function history(Article $article)
+    {
+        $article = $article->load(['histories' => function ($query) {
+            $query->orderBy('created_at', 'desc');
+        }]);
+
+        return view('articles.history', compact('article'));
+    }
 }
 

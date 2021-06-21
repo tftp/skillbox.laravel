@@ -36,6 +36,8 @@ class UpdateUsersTable extends Migration
      */
     public function down()
     {
-        $table->dropForeign(['role_id']);
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['role_id']);
+        });
     }
 }
