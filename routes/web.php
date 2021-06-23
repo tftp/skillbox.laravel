@@ -9,6 +9,8 @@ Route::get('/', [ArticlesController::class, 'index'])->name('home');
 Route::resource('/articles', ArticlesController::class)->except(['index']);
 Route::get('/articles/tags/{tag}', [TagsController::class, 'index'])->name('articles.tags');
 
+Route::resource('/news', \App\Http\Controllers\NewsController::class);
+
 Route::get('/about', function () {
     $title = 'О нас';
     return view('about', compact('title'));
