@@ -13,6 +13,7 @@
             </div>
         @endforeach
 
+        {{ $articles->links() }}
     </div><!-- /.blog-main -->
 
 @endsection

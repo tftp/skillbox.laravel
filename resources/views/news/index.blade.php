@@ -6,7 +6,7 @@
 
     <div class="col-md-8 blog-main">
 
-        <h2>Список новостей</h2>
+        <h2 class="blog-post-title mb-4">Список новостей</h2>
 
         @foreach($news as $newsItem)
             <div class="blog-post">
@@ -15,6 +15,7 @@
             </div>
         @endforeach
 
+        {{ $news->links() }}
     </div><!-- /.blog-main -->
 
 @endsection

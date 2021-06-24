@@ -19,7 +19,11 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::all();
+        if (auth()->user() && auth()->user()->isAdmin()) {
+            $news = News::paginate(20);
+        } else {
+            $news = News::paginate(10);
+        }
 
         return view('news.index', ['news' => $news]);
     }

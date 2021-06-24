@@ -1,4 +1,4 @@
-<h3 class="blog-post-title"><a href="{{ route('news.show', ['news' => $newsItem]) }}">{{$newsItem->title}}</a></h3>
+<h3><a href="{{ route('news.show', ['news' => $newsItem]) }}">{{$newsItem->title}}</a></h3>
 @admin
     <form method="post" action="{{ route('news.destroy', ['news' => $newsItem]) }}">
         @csrf
