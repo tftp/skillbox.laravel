@@ -14,6 +14,7 @@ class UpdateNewsRequest extends FormRequest
     public function rules()
     {
         return [
+            'image-news-item' => 'file|image|max:512',
             'title' => 'required|between:5,100',
             'body' => 'required',
         ];

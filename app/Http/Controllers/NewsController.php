@@ -60,23 +60,19 @@ class NewsController extends Controller
     {
         $validated = $request->validated();
 
-        $image = $request->validate([
-            'image-news-item' => 'file|image|max:512',
-        ]);
-
         $newsItem = $news;
         $newsItem->title = $validated['title'];
         $newsItem->body = $validated['body'];
-        $newsItem->img_path = $image ? $image['image-news-item']->store('images') : $newsItem->img_path;
+        $newsItem->img_path = array_key_exists('image-news-item', $validated) ? $validated['image-news-item']->store('images') : $newsItem->img_path;
         $newsItem->save();
 
-        return redirect(route('news.show', ['news' => $newsItem]));
+        return redirect()->route('news.show', ['news' => $newsItem]);
     }
 
     public function destroy(News $news)
     {
         $news->delete();
 
-        return  redirect(route('news.index'));
+        return  redirect()->route('news.index');
     }
 }
