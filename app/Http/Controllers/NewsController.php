@@ -38,7 +38,7 @@ class NewsController extends Controller
         $validated = $request->validated();
 
         $newsItem = new News();
-        $newsItem->img_path = $validated['image-news-item']->store('images');
+        $newsItem->img_path = getPath($validated['image-news-item']);
         $newsItem->title = $validated['title'];
         $newsItem->body = $validated['body'];
         $newsItem->save();
@@ -63,7 +63,7 @@ class NewsController extends Controller
         $newsItem = $news;
         $newsItem->title = $validated['title'];
         $newsItem->body = $validated['body'];
-        $newsItem->img_path = array_key_exists('image-news-item', $validated) ? $validated['image-news-item']->store('images') : $newsItem->img_path;
+        $newsItem->img_path = array_key_exists('image-news-item', $validated) ? getPath($validated['image-news-item']) : $newsItem->img_path;
         $newsItem->save();
 
         return redirect()->route('news.show', ['news' => $newsItem]);
