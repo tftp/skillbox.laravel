@@ -22,6 +22,7 @@ class NewsFactory extends Factory
     public function definition()
     {
         return [
+            'img_path' => 'images/no_image.jpg',
             'title' => $this->faker->sentence(2, true),
             'body' => $this->faker->paragraph(20),
         ];

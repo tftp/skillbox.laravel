@@ -11,8 +11,4 @@ class News extends Model
 
     protected $guarded = [];
 
-    public function image()
-    {
-        return $this->hasOne(Image::class);
-    }
 }

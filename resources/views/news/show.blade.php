@@ -11,7 +11,7 @@
 
         <div class="blog-post">
             @include('news.item')
-            <p><img src="{{asset($newsItem->image->path)}}" width="200" height="200"></p>
+            <p><img src="{{asset($newsItem->img_path)}}" width="200" height="200"></p>
             <p>{{$newsItem->body}}</p>
         </div><!-- /.blog-post -->
 

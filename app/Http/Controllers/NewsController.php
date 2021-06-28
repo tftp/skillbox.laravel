@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoryNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
-use App\Models\Image;
 use App\Models\News;
 
 class NewsController extends Controller
@@ -21,9 +20,9 @@ class NewsController extends Controller
     public function index()
     {
         if (auth()->user() && auth()->user()->isAdmin()) {
-            $news = News::with('image')->paginate(20);
+            $news = News::paginate(20);
         } else {
-            $news = News::with('image')->paginate(10);
+            $news = News::paginate(10);
         }
 
         return view('news.index', ['news' => $news]);
@@ -38,13 +37,11 @@ class NewsController extends Controller
     {
         $validated = $request->validated();
 
-        $imageForNews = new Image(['path' => $validated['image-news-item']->store('images')]);
-
         $newsItem = new News();
+        $newsItem->img_path = $validated['image-news-item']->store('images');
         $newsItem->title = $validated['title'];
         $newsItem->body = $validated['body'];
         $newsItem->save();
-        $newsItem->image()->save($imageForNews);
 
         return redirect()->route('news.show', ['news' => $newsItem]);
     }
@@ -66,15 +63,8 @@ class NewsController extends Controller
         $newsItem = $news;
         $newsItem->title = $validated['title'];
         $newsItem->body = $validated['body'];
+        $newsItem->img_path = array_key_exists('image-news-item', $validated) ? $validated['image-news-item']->store('images') : $newsItem->img_path;
         $newsItem->save();
-
-        if (array_key_exists('image-news-item', $validated)) {
-            $newImageForNews = new Image(['path' => $validated['image-news-item']->store('images')]);
-
-            $newsItem->image()->delete();
-
-            $newsItem->image()->save($newImageForNews);
-        }
 
         return redirect()->route('news.show', ['news' => $newsItem]);
     }
