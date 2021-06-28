@@ -49,6 +49,7 @@
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" href="{{ route('admin.articles') }}">Список статей</a>
                     <a class="nav-item nav-link" href="{{ route('admin.feedback') }}">Обратная связь</a>
+                    <a class="nav-item nav-link" href="{{ route('news.create') }}">Создать новость</a>
                 </div>
             </div>
         </nav>
@@ -61,6 +62,7 @@
                 <a class="p-2 text-muted" href="{{ route('owner.articles') }}">Мои статьи</a>
             @endif
             <a class="p-2 text-muted" href="{{ route('about') }}">О нас</a>
+            <a class="p-2 text-muted" href="{{ route('news.index') }}">Новости</a>
             <a class="p-2 text-muted" href="{{ route('contacts.create') }}">Контакты</a>
             <a class="p-2 text-muted" href="{{ route('articles.create') }}">Создать статью</a>
         </nav>

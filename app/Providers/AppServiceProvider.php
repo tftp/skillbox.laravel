@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Listeners\SendArcticleCreatedNotification;
 use App\Listeners\SendArcticleDeletedNotification;
 use App\Listeners\SendArcticleUpdatedNotification;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use App\Services\PushallService;
@@ -55,5 +56,7 @@ class AppServiceProvider extends ServiceProvider
 
             return false;
         });
+
+        Paginator::useBootstrap();
     }
 }
