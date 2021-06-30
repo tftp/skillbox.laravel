@@ -46,7 +46,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer('layout.sidebar', function ($view) {
-            $view->with('tagsCloud', \App\Models\Tag::has('articles')->get());
+            $view->with([
+                'articleTagsCloud' => \App\Models\Tag::has('articles')->get(),
+                'newsTagsCloud' => \App\Models\Tag::has('news')->get(),
+            ]);
         });
 
         Blade::if('admin', function () {
