@@ -56,6 +56,7 @@ class NewsController extends Controller
 
     public function show(News $news)
     {
+        $news = $news->load('comments');
         return view('news.show', ['newsItem' => $news]);
     }
 
