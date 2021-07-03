@@ -48,4 +48,19 @@ class Article extends Model
     {
         return $this->changes;
     }
+
+    public function getLensBodyAttribute($query)
+    {
+        return strlen($this->body);
+    }
+
+    public function getHistoriesCountAttribute($query)
+    {
+        return $this->histories()->count();
+    }
+
+    public function getCommentsCountAttribute($query)
+    {
+        return $this->comments()->count();
+    }
 }

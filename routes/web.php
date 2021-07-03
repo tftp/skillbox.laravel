@@ -17,6 +17,12 @@ Route::get('/about', function () {
     return view('about', compact('title'));
 })->name('about');
 
+Route::get('information', function (\App\Services\InformationCollector $informationCollector) {
+    $title = 'Информация';
+    $collection = $informationCollector->collect();
+    return view('information', compact('title', 'collection'));
+})->name('information')->middleware('adminPrivileges');
+
 Route::get('/admin/feedback', [ContactsController::class, 'index'])->name('admin.feedback')->middleware('adminPrivileges');
 Route::get('/contacts', [ContactsController::class, 'create'])->name('contacts.create');
 Route::post('/contacts', [ContactsController::class, 'store'])->name('contacts.store');

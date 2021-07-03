@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Listeners\SendArcticleCreatedNotification;
 use App\Listeners\SendArcticleDeletedNotification;
 use App\Listeners\SendArcticleUpdatedNotification;
+use App\Services\InformationCollector;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
@@ -35,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
             ])
         ->needs('$adminEmail')
         ->giveConfig('mail.adminEmail');
+
+        $this->app->singleton(InformationCollector::class, function () {
+            return new InformationCollector();
+        });
 
     }
 

@@ -68,4 +68,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
+
+    public function getArticlesCountAttribute($query)
+    {
+        return $this->articles()->count();
+    }
 }
