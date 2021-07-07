@@ -49,7 +49,7 @@ class InformationCollector
 
     private function shortArticle()
     {
-        $article = Article::all()->each->append('lens_body')->sortBy('lens_body')->first();
+        $article = Article::selectRaw('*, length(body) as length_body')->orderBy('length_body')->first();
 
         $this->result['Самая короткая статья.'] = [
                 'Количество символов' => $article->lens_body,
@@ -60,7 +60,7 @@ class InformationCollector
 
     private function longArticle()
     {
-        $article = Article::all()->each->append('lens_body')->sortByDesc('lens_body')->first();
+        $article = Article::selectRaw('*, length(body) as length_body')->orderByDesc('length_body')->first();
 
         $this->result['Самая длинная статья.'] = [
             'Количество символов' => $article->lens_body,
@@ -71,8 +71,8 @@ class InformationCollector
 
     private function averageArticlesOfUsers()
     {
-        $usersCount = User::all()->each->append('articles_count')->where('articles_count', '>', 0)->count();
-        $articlesCount = User::all()->each->append('articles_count')->where('articles_count', '>', 0)->sum('articles_count');
+        $usersCount = User::has('articles')->count();
+        $articlesCount = Article::count();
 
         $this->result['Средние количество статей у активных пользователей.'] = [
             'Средние количество статей' => $articlesCount/$usersCount,
