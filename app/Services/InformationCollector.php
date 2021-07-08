@@ -5,6 +5,8 @@ namespace App\Services;
 
 
 use App\Models\Article;
+use App\Models\Comment;
+use App\Models\HistoryArticle;
 use App\Models\News;
 use App\Models\User;
 
@@ -81,7 +83,7 @@ class InformationCollector
 
     private function maxHistoriesChangesArticle()
     {
-        $article = Article::all()->each->append('histories_count')->sortBy('histories_count')->last();
+        $article = HistoryArticle::selectRaw('article_id, count(*) as count_articles')->groupBy('article_id')->orderByDesc('count_articles')->first()->article;
 
         $this->result['Самая непостоянная статья, которую меняли чаще всего'] = [
             'Путь' => route('articles.show', ['article' => $article]),
@@ -91,7 +93,14 @@ class InformationCollector
 
     private function hasMaxCommentsOfArticle()
     {
-        $article = Article::all()->each->append('comments_count')->sortBy('comments_count')->last();
+        $article_id = Comment::where('commentable_type', Article::class)
+            ->selectRaw('commentable_id, count(*) as count_comments')
+            ->groupBy('commentable_id')
+            ->orderByDesc('count_comments')
+            ->first()
+            ->commentable_id;
+
+        $article = Article::find($article_id);
 
         $this->result['Самая обсуждаемая статья'] = [
             'Путь' => route('articles.show', ['article' => $article]),

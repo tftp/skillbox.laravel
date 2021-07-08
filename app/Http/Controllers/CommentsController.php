@@ -26,7 +26,7 @@ class CommentsController extends Controller
             'commentable_id' => $article->id,
         ]);
 
-        return view('articles.show', compact('article'));
+        return redirect()->route('articles.show', compact('article'));
     }
 
     public  function storeNewsComment(StoreCommentRequest $request, News $news)
