@@ -10,17 +10,17 @@
             <h2 class="blog-post-title">Информация о портале</h2>
 
             <table class="table ">
-                @foreach($collection as $description => $collectItem)
+                @foreach($collection as $collectItem)
                     <thead>
                         <tr class="table-info">
-                            <th scope="col"  colspan="2">{{$description}}</th>
+                            <th scope="col"  colspan="2">{{$collectItem['head']}}</th>
                         </tr>
                     </thead>
-                    @foreach($collectItem as $key => $item)
+                    @foreach($collectItem['rows'] as $row)
                         <tbody>
                         <tr>
-                            <td>{{$key}}</td>
-                            <td class="text-center">{{$item}}</td>
+                            <td>{{$row['description']}}</td>
+                            <td class="text-center">{{$row['value']}}</td>
                         </tr>
                         </tbody>
                     @endforeach
