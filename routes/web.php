@@ -17,11 +17,7 @@ Route::get('/about', function () {
     return view('about', compact('title'));
 })->name('about');
 
-Route::get('information', function (\App\Services\InformationCollector $informationCollector) {
-    $title = 'Информация';
-    $collection = $informationCollector->collect();
-    return view('information', compact('title', 'collection'));
-})->name('information')->middleware('adminPrivileges');
+Route::get('information', [\App\Http\Controllers\ServicesProcessingController::class, 'informationCollectorServices'])->name('information');
 
 Route::get('/admin/feedback', [ContactsController::class, 'index'])->name('admin.feedback')->middleware('adminPrivileges');
 Route::get('/contacts', [ContactsController::class, 'create'])->name('contacts.create');
