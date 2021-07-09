@@ -15,6 +15,13 @@
             <p>{{$newsItem->body}}</p>
         </div><!-- /.blog-post -->
 
+        <div class="comments">
+            @include('comments.show', ['comments' => $newsItem->comments])
+            <form method="post" action="{{ route('comments.store_news_comment', ['news' => $newsItem]) }}">
+                @include('comments.form')
+            </form>
+        </div>
+
     </div><!-- /.blog-main -->
 
 @endsection

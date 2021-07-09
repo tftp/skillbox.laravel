@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoryNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
 use App\Models\News;
+use App\Services\TagsSynchronizer;
 
 class NewsController extends Controller
 {
-    public function __construct()
+    private TagsSynchronizer $tagsSynchronizer;
+
+    public function __construct(TagsSynchronizer $tagsSynchronizer)
     {
+        $this->tagsSynchronizer = $tagsSynchronizer;
         $this->middleware('adminPrivileges')->except(['index', 'show']);
     }
     /**
@@ -43,11 +47,16 @@ class NewsController extends Controller
         $newsItem->body = $validated['body'];
         $newsItem->save();
 
+        $tags = collect(array_filter(explode(',', request('tags'))));
+
+        $this->tagsSynchronizer->sync($tags, $newsItem);
+
         return redirect()->route('news.show', ['news' => $newsItem]);
     }
 
     public function show(News $news)
     {
+        $news = $news->load('comments');
         return view('news.show', ['newsItem' => $news]);
     }
 
@@ -65,6 +74,10 @@ class NewsController extends Controller
         $newsItem->body = $validated['body'];
         $newsItem->img_path = array_key_exists('image-news-item', $validated) ? getPath($validated['image-news-item']) : $newsItem->img_path;
         $newsItem->save();
+
+        $tags = collect(array_filter(explode(',', request('tags'))));
+
+        $this->tagsSynchronizer->sync($tags, $newsItem);
 
         return redirect()->route('news.show', ['news' => $newsItem]);
     }

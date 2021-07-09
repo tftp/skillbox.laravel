@@ -15,17 +15,8 @@
             <form method="post" action="{{ route('articles.update', ['article' => $article]) }}">
                 @method('PATCH')
                 @include('articles.form', ['checked' => ($article->published ? 'checked' : '')])
-                <div class="form-group">
-                    <label for="tagsArticle">Тэги</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="tagsArticle"
-                        placeholder="тэг1,тэг2,тэг3...."
-                        name="tags"
-                        value="{{old('tags', $article->tags->pluck('title')->implode(',') ?? '')}}"
-                    >
-                </div>
+
+                @include('tags.form_element', ['tags' => $article->tags])
 
                 <button type="submit" class="btn btn-primary">Изменить статью</button>
             </form>

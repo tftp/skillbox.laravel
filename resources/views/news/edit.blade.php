@@ -15,6 +15,7 @@
             <form method="post" action="{{ route('news.update', ['news' => $newsItem]) }}"  enctype="multipart/form-data">
                 @method('PATCH')
                 @include('news.form')
+                @include('tags.form_element', ['tags' => $newsItem->tags])
                 <button type="submit" class="btn btn-primary">Изменить новость</button>
             </form>
             <form method="post" action="{{ route('news.destroy', ['news' => $newsItem]) }}">

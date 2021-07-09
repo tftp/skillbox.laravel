@@ -13,7 +13,12 @@
             <p>{{$article->body}}</p>
         </div><!-- /.blog-post -->
 
-        @include('comments.show')
+        <div class="comments">
+            @include('comments.show', ['comments' => $article->comments])
+            <form method="post" action="{{ route('comments.store_articles_comment', ['article' => $article]) }}">
+                @include('comments.form')
+            </form>
+        </div>
 
     </div><!-- /.blog-main -->
 

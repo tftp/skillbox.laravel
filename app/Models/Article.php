@@ -26,7 +26,7 @@ class Article extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
     public function isPublished()
@@ -36,7 +36,7 @@ class Article extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
     public function histories()
@@ -47,5 +47,20 @@ class Article extends Model
     public function getChanges()
     {
         return $this->changes;
+    }
+
+    public function getLensBodyAttribute($query)
+    {
+        return strlen($this->body);
+    }
+
+    public function getHistoriesCountAttribute($query)
+    {
+        return $this->histories()->count();
+    }
+
+    public function getCommentsCountAttribute($query)
+    {
+        return $this->comments()->count();
     }
 }

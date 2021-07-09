@@ -13,6 +13,7 @@
 
             <form method="post" action="{{ route('news.store') }}" enctype="multipart/form-data">
                 @include('news.form')
+                @include('tags.form_element')
                 <button type="submit" class="btn btn-primary">Создать новость</button>
             </form>
 
