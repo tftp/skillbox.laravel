@@ -51,6 +51,7 @@
                     <a class="nav-item nav-link" href="{{ route('admin.feedback') }}">Обратная связь</a>
                     <a class="nav-item nav-link" href="{{ route('news.create') }}">Создать новость</a>
                     <a class="nav-item nav-link" href="{{ route('information') }}">Информация о портале</a>
+                    <a class="nav-item nav-link" href="{{ route('reports.general.get') }}">Итоговый отчет</a>
                 </div>
             </div>
         </nav>

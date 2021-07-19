@@ -26,6 +26,8 @@ Route::get('/owner/articles', [\App\Http\Controllers\ArticlesOwnerController::cl
 Route::get('/admin/articles', [\App\Http\Controllers\ArticlesAdminController::class, 'index'])->name('admin.articles');
 Route::get('/admin/articles/{article}/edit', [\App\Http\Controllers\ArticlesController::class, 'edit'])->name('admin.articles.edit');
 Route::get('/admin/articles/{article}/history', [\App\Http\Controllers\ArticlesController::class, 'history'])->name('admin.articles.history')->middleware('adminPrivileges');
+Route::get('/admin/general-report', [\App\Http\Controllers\ReportsController::class, 'generalReportGet'])->name('reports.general.get')->middleware('adminPrivileges');
+Route::post('/admin/general-report', [\App\Http\Controllers\ReportsController::class, 'generalReportPost'])->name('reports.general.post')->middleware('adminPrivileges');
 
 Route::post('/articles/{article}/comments', [\App\Http\Controllers\CommentsController::class, 'storeArticlesComment'])->name('comments.store_articles_comment');
 Route::post('/news/{news}/comments', [\App\Http\Controllers\CommentsController::class, 'storeNewsComment'])->name('comments.store_news_comment');
