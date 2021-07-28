@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Article;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -14,11 +15,11 @@ class TestBroadcast implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $data;
+    private $article;
 
-    public function __construct($anyData)
+    public function __construct(Article $article)
     {
-        $this->data = $anyData;
+        $this->article = $article;
     }
 
     /**
@@ -29,5 +30,14 @@ class TestBroadcast implements ShouldBroadcast
     public function broadcastOn()
     {
         return new PrivateChannel('admin-channel');
+    }
+
+    public function broadcastWith()
+    {
+        $changes = $this->article->histories()->latest()->first()->changes;
+        $link = route('articles.show', ['article' => $this->article]);
+        return ['id' => $this->article->id,
+                'changes' => $changes,
+                'link' => $link];
     }
 }

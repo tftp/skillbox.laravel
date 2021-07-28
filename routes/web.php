@@ -14,7 +14,6 @@ Route::resource('/news', \App\Http\Controllers\NewsController::class);
 
 Route::get('/about', function () {
     $title = 'О нас';
-    event(new \App\Events\TestBroadcast('проверка broadcast'));
     return view('about', compact('title'));
 })->name('about');
 
