@@ -28,6 +28,6 @@ class TestBroadcast implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('testing');
+        return new PrivateChannel('admin-channel');
     }
 }
