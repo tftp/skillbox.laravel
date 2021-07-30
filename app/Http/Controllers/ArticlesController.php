@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\TestBroadcast;
+use App\Events\ArticleUpdateBroadcast;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
@@ -73,7 +73,7 @@ class ArticlesController extends Controller
 
         $this->tagsSynchronizer->sync($tags, $article);
 
-        TestBroadcast::dispatch($article);
+        ArticleUpdateBroadcast::dispatch($article);
 
         return redirect()->route('articles.show', ['article' => $article])->with('success', 'Статья изменена');
     }

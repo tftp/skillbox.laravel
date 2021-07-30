@@ -11,7 +11,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class TestBroadcast implements ShouldBroadcast
+class ArticleUpdateBroadcast implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -22,11 +22,6 @@ class TestBroadcast implements ShouldBroadcast
         $this->article = $article;
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
     public function broadcastOn()
     {
         return new PrivateChannel('admin-channel');
@@ -36,8 +31,11 @@ class TestBroadcast implements ShouldBroadcast
     {
         $changes = $this->article->histories()->latest()->first()->changes;
         $link = route('articles.show', ['article' => $this->article]);
-        return ['id' => $this->article->id,
+        $id = $this->article->id;
+
+        return ['id' => $id,
                 'changes' => $changes,
-                'link' => $link];
+                'link' => $link,
+                ];
     }
 }
