@@ -22,7 +22,11 @@ class ArticlesController extends Controller
 
     public function index()
     {
-        $articles = Article::with('tags')->latest()->where('published', true)->paginate(10);
+        $page = request('page') ?? '1';
+
+        $articles = cache()->tags(['articles'])->remember('articles' . $page, 3600, function () {
+            return Article::with('tags')->latest()->where('published', true)->paginate(10);
+        });
 
         return view('articles.index', compact('articles'));
     }
