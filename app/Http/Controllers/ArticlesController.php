@@ -33,7 +33,10 @@ class ArticlesController extends Controller
 
     public function show(Article $article)
     {
-        $article = $article->load('comments');
+        $article = cache()->tags('comments_article')->remember('comments_article' . $article->id, 3600, function () use ($article) {
+            return $article->load('comments');
+        });
+
         return view('articles.show', compact('article'));
     }
 
@@ -90,10 +93,11 @@ class ArticlesController extends Controller
 
     public function history(Article $article)
     {
-        $article = $article->load(['histories' => function ($query) {
-            $query->orderBy('created_at', 'desc');
-        }]);
-
+        $article = cache()->tags('articles')->remember('article_histories' . $article->id, 3600, function () use ($article) {
+            return $article->load(['histories' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }]);
+        });
         return view('articles.history', compact('article'));
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Cache;
 
 class NewsController extends Controller
 {
-    private TagsSynchronizer $tagsSynchronizer;
+    private $tagsSynchronizer;
 
     public function __construct(TagsSynchronizer $tagsSynchronizer)
     {
@@ -63,7 +63,10 @@ class NewsController extends Controller
 
     public function show(News $news)
     {
-        $news = $news->load('comments');
+        $news = cache()->tags('comments_news')->remember('comments_news' . $news->id, 3600, function () use ($news) {
+            return $news->load('comments');
+        });
+
         return view('news.show', ['newsItem' => $news]);
     }
 
