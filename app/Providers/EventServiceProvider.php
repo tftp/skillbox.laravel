@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\Events\ArticleCreated;
 use App\Events\ArticleDeleted;
 use App\Events\ArticleUpdated;
+use App\Events\CommentsChanged;
 use App\Events\NewsChanged;
 use App\Listeners\ArticlesClearCache;
+use App\Listeners\CommentsClearCache;
 use App\Listeners\NewsClearCache;
 use App\Listeners\SendArcticleCreatedNotification;
 use App\Listeners\SendArcticleDeletedNotification;
@@ -43,6 +45,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         NewsChanged::class => [
             NewsClearCache::class,
+        ],
+        CommentsChanged::class => [
+            CommentsClearCache::class,
         ],
     ];
 
