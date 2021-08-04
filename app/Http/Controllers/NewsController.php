@@ -6,10 +6,11 @@ use App\Http\Requests\StoryNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
 use App\Models\News;
 use App\Services\TagsSynchronizer;
+use Illuminate\Support\Facades\Cache;
 
 class NewsController extends Controller
 {
-    private TagsSynchronizer $tagsSynchronizer;
+    private $tagsSynchronizer;
 
     public function __construct(TagsSynchronizer $tagsSynchronizer)
     {
@@ -23,10 +24,16 @@ class NewsController extends Controller
      */
     public function index()
     {
+        $page = request('page') ?? '1';
+
         if (auth()->user() && auth()->user()->isAdmin()) {
-            $news = News::paginate(20);
+            $news = Cache::tags(['news'])->remember('news_admin' . $page, 3600, function () {
+                return News::paginate(10);
+            });
         } else {
-            $news = News::paginate(10);
+            $news = Cache::tags(['news'])->remember('news' . $page, 3600, function () {
+                return News::paginate(5);
+            });
         }
 
         return view('news.index', ['news' => $news]);
@@ -56,7 +63,10 @@ class NewsController extends Controller
 
     public function show(News $news)
     {
-        $news = $news->load('comments');
+        $news = cache()->tags('comments_news')->remember('comments_news' . $news->id, 3600, function () use ($news) {
+            return $news->load('comments');
+        });
+
         return view('news.show', ['newsItem' => $news]);
     }
 

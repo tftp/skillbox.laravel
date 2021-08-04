@@ -30,12 +30,16 @@ class InformationCollector
 
     private function countArticles()
     {
+        $articlesCount = cache()->tags(['articles'])->remember('collector_articles_count', 3600, function () {
+            return Article::count();
+        });
+
         $this->result[] = [
             'head' => 'Общее количество статей',
             'rows' => [
                 [
                     'description' => 'Количество',
-                    'value' => Article::count(),
+                    'value' => $articlesCount,
                 ],
             ],
         ];
@@ -43,12 +47,16 @@ class InformationCollector
 
     private function countNews()
     {
+        $newsCount = cache()->tags(['news'])->remember('collector_news_count', 3600, function () {
+            return News::count();
+        });
+
         $this->result[] = [
             'head' => 'Общее количество новостей',
             'rows' => [
                 [
                     'description' => 'Количество',
-                    'value' => News::count(),
+                    'value' => $newsCount,
                 ],
             ],
         ];
@@ -56,12 +64,16 @@ class InformationCollector
 
     private function userWithMaxArticles()
     {
+        $authorMax = cache()->tags(['articles'])->remember('collector_author_articles_max', 3600, function () {
+            return User::withCount('articles')->orderBy('articles_count', 'desc')->first()->name;
+        });
+
         $this->result[] = [
             'head' => 'ФИО автора, у которого больше всего статей на сайте',
             'rows' => [
                 [
                     'description' => 'ФИО автора',
-                    'value' => User::withCount('articles')->orderBy('articles_count', 'desc')->first()->name,
+                    'value' => $authorMax,
                 ],
             ],
         ];
@@ -69,7 +81,9 @@ class InformationCollector
 
     private function shortArticle()
     {
-        $article = Article::selectRaw('*, length(body) as length_body')->orderBy('length_body')->first();
+        $article = cache()->tags(['articles'])->remember('collector_article_short', 3600, function () {
+            return Article::selectRaw('*, length(body) as length_body')->orderBy('length_body')->first();
+        });
 
         $this->result[] = [
             'head' => 'Самая короткая статья.',
@@ -92,7 +106,9 @@ class InformationCollector
 
     private function longArticle()
     {
-        $article = Article::selectRaw('*, length(body) as length_body')->orderByDesc('length_body')->first();
+        $article = cache()->tags(['articles'])->remember('collector_article_long', 3600, function () {
+            return Article::selectRaw('*, length(body) as length_body')->orderByDesc('length_body')->first();
+        });
 
         $this->result[] = [
             'head' => 'Самая длинная статья.',
@@ -115,8 +131,13 @@ class InformationCollector
 
     private function averageArticlesOfUsers()
     {
-        $usersCount = User::has('articles')->count();
-        $articlesCount = Article::count();
+        $usersCount = cache()->tags(['articles'])->remember('collector_users_count', 3600, function () {
+            return User::has('articles')->count();
+        });
+
+        $articlesCount = cache()->tags(['articles'])->remember('collector_articles_count', 3600, function () {
+            return Article::count();
+        });
 
         $this->result[] = [
             'head' => 'Средние количество статей у активных пользователей.',
@@ -131,7 +152,9 @@ class InformationCollector
 
     private function maxHistoriesChangesArticle()
     {
-        $article = HistoryArticle::selectRaw('article_id, count(*) as count_articles')->groupBy('article_id')->orderByDesc('count_articles')->first()->article;
+        $article = cache()->tags(['articles'])->remember('collector_article_max_changes_history', 3600, function () {
+            return HistoryArticle::selectRaw('article_id, count(*) as count_articles')->groupBy('article_id')->orderByDesc('count_articles')->first()->article;
+        });
 
         $this->result[] = [
             'head' => 'Самая непостоянная статья, которую меняли чаще всего',
@@ -150,14 +173,16 @@ class InformationCollector
 
     private function hasMaxCommentsOfArticle()
     {
-        $article_id = Comment::where('commentable_type', Article::class)
-            ->selectRaw('commentable_id, count(*) as count_comments')
-            ->groupBy('commentable_id')
-            ->orderByDesc('count_comments')
-            ->first()
-            ->commentable_id;
+        $article_id = cache()->tags(['comments', 'articles'])->remember('collector_article_id', 3600, function () {
+            return Comment::where('commentable_type', Article::class)
+                    ->selectRaw('commentable_id, count(*) as count_comments')
+                    ->groupBy('commentable_id')
+                    ->orderByDesc('count_comments')
+                    ->first()
+                    ->commentable_id;
+        });
 
-        $article = Article::find($article_id);
+        $article = Article::findOrFail($article_id);
 
         $this->result[] = [
             'head' => 'Самая обсуждаемая статья',

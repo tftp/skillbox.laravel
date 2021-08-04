@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\ReportCreatedBroadcast;
 use App\Mail\GeneralReport;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -38,5 +39,6 @@ class CompletedGeneralReport implements ShouldQueue
         $adminEmail = config('mail.adminEmail');
         Mail::to($adminEmail)->send(new GeneralReport($this->data));
         Log::info("Отправлен Итоговый отчет на адрес $adminEmail");
+        ReportCreatedBroadcast::dispatch();
     }
 }

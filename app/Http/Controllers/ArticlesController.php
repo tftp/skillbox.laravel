@@ -22,14 +22,21 @@ class ArticlesController extends Controller
 
     public function index()
     {
-        $articles = Article::with('tags')->latest()->where('published', true)->paginate(10);
+        $page = request('page') ?? '1';
+
+        $articles = cache()->tags(['articles'])->remember('articles' . $page, 3600, function () {
+            return Article::with('tags')->latest()->where('published', true)->paginate(10);
+        });
 
         return view('articles.index', compact('articles'));
     }
 
     public function show(Article $article)
     {
-        $article = $article->load('comments');
+        $article = cache()->tags('comments_article')->remember('comments_article' . $article->id, 3600, function () use ($article) {
+            return $article->load('comments');
+        });
+
         return view('articles.show', compact('article'));
     }
 
@@ -86,10 +93,11 @@ class ArticlesController extends Controller
 
     public function history(Article $article)
     {
-        $article = $article->load(['histories' => function ($query) {
-            $query->orderBy('created_at', 'desc');
-        }]);
-
+        $article = cache()->tags('articles')->remember('article_histories' . $article->id, 3600, function () use ($article) {
+            return $article->load(['histories' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }]);
+        });
         return view('articles.history', compact('article'));
     }
 }

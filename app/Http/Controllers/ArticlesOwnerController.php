@@ -15,7 +15,13 @@ class ArticlesOwnerController extends Controller
     public function index()
     {
         $title = 'Мои статьи';
-        $articles = Article::with('tags')->latest()->where('user_id', auth()->id())->paginate(10);
+        $page = request('page') ?? '1';
+        $user_id = auth()->id();
+
+        $articles = cache()->tags(['articles'])->remember("articles_owner{$user_id}_{$page}", 3600, function () {
+            return Article::with('tags')->latest()->where('user_id', auth()->id())->paginate(10);
+        });
+
         return view('articles.index', compact('title', 'articles'));
     }
 }

@@ -5,6 +5,11 @@ namespace App\Providers;
 use App\Events\ArticleCreated;
 use App\Events\ArticleDeleted;
 use App\Events\ArticleUpdated;
+use App\Events\CommentsChanged;
+use App\Events\NewsChanged;
+use App\Listeners\ArticlesClearCache;
+use App\Listeners\CommentsClearCache;
+use App\Listeners\NewsClearCache;
 use App\Listeners\SendArcticleCreatedNotification;
 use App\Listeners\SendArcticleDeletedNotification;
 use App\Listeners\SendArcticleUpdatedNotification;
@@ -38,13 +43,18 @@ class EventServiceProvider extends ServiceProvider
         ArticleDeleted::class => [
             SendArcticleDeletedNotification::class,
         ],
+        NewsChanged::class => [
+            NewsClearCache::class,
+        ],
+        CommentsChanged::class => [
+            CommentsClearCache::class,
+        ],
     ];
 
-    /**
-     * Register any events for your application.
-     *
-     * @return void
-     */
+    protected $subscribe = [
+        ArticlesClearCache::class,
+    ];
+
     public function boot()
     {
         //
